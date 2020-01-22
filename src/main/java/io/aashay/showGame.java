@@ -2,7 +2,6 @@ package io.aashay;
 
 import com.googlecode.lanterna.TerminalPosition;
 import java.io.IOException;
-
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
@@ -14,13 +13,17 @@ import com.googlecode.lanterna.TerminalSize;
 /**
  * start2
  */
-public class start2 {
+public class showGame {
+  static int[] Xpose = {11,11};
 
-
+  public static int[] getXpose(){
+    return Xpose;
+  }
 
   public static void main(String[] args) throws InterruptedException{
     DefaultTerminalFactory defaultTerminalFactory =  new DefaultTerminalFactory();
     Terminal terminal = null;
+
     try {
       terminal = defaultTerminalFactory.createTerminal();
       terminal.enterPrivateMode();
@@ -33,7 +36,7 @@ public class start2 {
 
       textGraphics.putString(2, 3, "Aashay made this");
       textGraphics.putString(2, 4, "Key Pressed: ");
-      textGraphics.drawRectangle(new TerminalPosition(10, 10), new TerminalSize(10, 10), '|');
+      textGraphics.drawRectangle(new TerminalPosition(10, 10), new TerminalSize(10, 10), '#');
       int[] Xpose = {11,11};
       textGraphics.putString(Xpose[0], Xpose[1], "X");
 
