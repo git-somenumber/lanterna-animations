@@ -7,10 +7,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Random;
 
+import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
-import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
@@ -98,18 +98,22 @@ public class screenTest {
     private static int[] getCellToRemove(final TerminalSize terminalSize, final String[] art) {
         final int[] cellToRemove = { random.nextInt(terminalSize.getColumns()),
                 random.nextInt(terminalSize.getRows()) };
-        if (isArtHere(art, cellToRemove)) {
+        final TerminalPosition artPose = new TerminalPosition(5, 3); // **configure position of art
+        if (isArtHere(art, cellToRemove, artPose)) {
             return cellToRemove;
-        } else if (isArtHere(art, cellToRemove)) {
+        } else if (isArtHere(art, cellToRemove, artPose)) {
             getCellToRemove(terminalSize, art);
         }
         return new int[2];
 
     }
 
-    private static boolean isArtHere(final String[] art, final int[] cellToRemove) {
-        if (cellToRemove[1] < numLines && cellToRemove[0] < numCharacters) {
-            if (art[cellToRemove[1]].charAt(cellToRemove[0]) == ('#')) {
+    private static boolean isArtHere(final String[] art, final int[] cellToRemove, final TerminalPosition artPosition) {
+        if (artPosition.getRow() <= cellToRemove[1] && cellToRemove[1] < numLines + artPosition.getRow()
+                && cellToRemove[0] < numCharacters + artPosition.getColumn()
+                && artPosition.getColumn() <= cellToRemove[0]) {
+            if (art[cellToRemove[1] - artPosition.getRow()]
+                    .charAt(cellToRemove[0] - artPosition.getColumn()) == ('#')) {
                 return false;
             } else {
                 return true;
