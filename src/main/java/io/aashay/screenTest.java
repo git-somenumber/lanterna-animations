@@ -1,12 +1,5 @@
 package io.aashay;
 
-import java.io.BufferedReader;
-import java.io.File;
-
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Random;
-
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextCharacter;
@@ -17,6 +10,11 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Random;
 
 public class screenTest {
     static final Random random = new Random();
@@ -31,7 +29,7 @@ public class screenTest {
         Terminal terminal = null;
 
         // ArrayList<int[]> name = new ArrayList<>();
-        final File file = new File("/Users/aashayshah/code/lanterna/src/main/java/io/aashay/a.txt");
+        final File file = new File("src/main/resources/a.txt");
         final BufferedReader artInFile = new BufferedReader(new FileReader(file));
 
         final String[] art = new String[numLines];
