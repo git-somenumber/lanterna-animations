@@ -1,7 +1,6 @@
 package io.aashay.Mario;
 
-import java.io.IOException;
-
+import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
@@ -10,6 +9,8 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
+import java.io.IOException;
+
 
 public class app {
     public static void main(String[] args) {
@@ -61,6 +62,7 @@ public class app {
         int positionCol = 5;
         int currentPose = 0;
         long poseTime = System.currentTimeMillis();
+        TerminalPosition CharacterPosition = new TerminalPosition(terminal.getTerminalSize().getRows()-5, 5);
         while (true) {
 
             final KeyStroke keyStroke = screen.pollInput();
@@ -69,26 +71,27 @@ public class app {
                 break;
 
             } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowRight)) {
-                placeCharacter(screen, terminal.getTerminalSize().getRows() - 5, positionCol++, 3);
+                CharacterPosition = CharacterPosition.withRelativeColumn(1);
+                placeCharacter(screen, CharacterPosition, 3);
                 currentPose = 3;
                 poseTime = System.currentTimeMillis();
             } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowLeft)) {
-                placeCharacter(screen, terminal.getTerminalSize().getRows() - 5, positionCol--, 6);
+                CharacterPosition = CharacterPosition.withRelativeColumn(-1);
+                placeCharacter(screen, CharacterPosition, 6);
                 currentPose = 6;
                 poseTime = System.currentTimeMillis();
             } else if (System.currentTimeMillis() - poseTime >= 300 && (currentPose == 3 || currentPose == 6)) {
-                placeCharacter(screen, terminal.getTerminalSize().getRows() - 5, positionCol, 0);
+                placeCharacter(screen,CharacterPosition, 0);
             }
             screen.refresh();
         }
     }
 
-    private void placeCharacter(Screen screen, int characterPositionR, int characterPositionC, int characterPose) {
+    private void placeCharacter(Screen screen, TerminalPosition characterPosition, int characterPose) {
         TextGraphics textGraphics = screen.newTextGraphics();
         String[] pose = Poses.getPoseI().getPose(characterPose);
-        for (String p : pose) {
-            textGraphics.putString(characterPositionC, characterPositionR, p);
-            characterPositionR++;
+        for (int i = 0;i<3;i++) {
+            textGraphics.putString(characterPosition.withRelativeRow(i), pose[i]);
         }
     }
 }
