@@ -59,10 +59,10 @@ public class app {
     }
 
     private void loop(Screen screen, Terminal terminal) throws IOException {
-        int positionCol = 5;
         int currentPose = 0;
         long poseTime = System.currentTimeMillis();
-        TerminalPosition CharacterPosition = new TerminalPosition(terminal.getTerminalSize().getRows()-5, 5);
+
+        TerminalPosition CharacterPosition = new TerminalPosition(5, terminal.getTerminalSize().getRows()-5);
         while (true) {
 
             final KeyStroke keyStroke = screen.pollInput();
