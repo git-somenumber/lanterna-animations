@@ -80,7 +80,11 @@ public class app {
                 placeCharacter(screen, CharacterPosition, 6);
                 currentPose = 6;
                 poseTime = System.currentTimeMillis();
-            } else if (System.currentTimeMillis() - poseTime >= 300 && (currentPose == 3 || currentPose == 6)) {
+            } else if(keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowDown)){
+                placeCharacter(screen, CharacterPosition, 9);
+                currentPose = 9;
+                poseTime = System.currentTimeMillis();
+            } else if (System.currentTimeMillis() - poseTime >= 300 && (currentPose != 0)) {
                 placeCharacter(screen,CharacterPosition, 0);
             }
             screen.refresh();
