@@ -13,14 +13,15 @@ import java.io.IOException;
 
 
 public class app {
+    Terminal terminal = null;
+    Screen screen = null;
+
     public static void main(String[] args) {
         new app().init();
     }
 
     private void init() {
         DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
-        Terminal terminal = null;
-        Screen screen = null;
 
         try {
             terminal = defaultTerminalFactory.createTerminal();
@@ -33,7 +34,7 @@ public class app {
             pathMaker(screen, terminal.getTerminalSize());
             screen.refresh();
 
-            loop(screen, terminal);
+            loop();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,7 +59,7 @@ public class app {
         }
     }
 
-    private void loop(Screen screen, Terminal terminal) throws IOException {
+    private void loop() throws IOException {
         int currentPose = 0;
         long poseTime = System.currentTimeMillis();
 
@@ -72,26 +73,26 @@ public class app {
 
             } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowRight)) {
                 CharacterPosition = CharacterPosition.withRelativeColumn(1);
-                placeCharacter(screen, CharacterPosition, 3);
+                placeCharacter(CharacterPosition, 3);
                 currentPose = 3;
                 poseTime = System.currentTimeMillis();
             } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowLeft)) {
                 CharacterPosition = CharacterPosition.withRelativeColumn(-1);
-                placeCharacter(screen, CharacterPosition, 6);
+                placeCharacter(CharacterPosition, 6);
                 currentPose = 6;
                 poseTime = System.currentTimeMillis();
             } else if(keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowDown)){
-                placeCharacter(screen, CharacterPosition, 9);
+                placeCharacter(CharacterPosition, 9);
                 currentPose = 9;
                 poseTime = System.currentTimeMillis();
             } else if (System.currentTimeMillis() - poseTime >= 300 && (currentPose != 0)) {
-                placeCharacter(screen,CharacterPosition, 0);
+                placeCharacter(CharacterPosition, 0);
             }
             screen.refresh();
         }
     }
 
-    private void placeCharacter(Screen screen, TerminalPosition characterPosition, int characterPose) {
+    private void placeCharacter(TerminalPosition characterPosition, int characterPose) {
         TextGraphics textGraphics = screen.newTextGraphics();
         String[] pose = Poses.getPoseI().getPose(characterPose);
         for (int i = 0;i<3;i++) {
