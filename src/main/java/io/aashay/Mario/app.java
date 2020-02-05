@@ -16,6 +16,8 @@ public class app {
     Terminal terminal = null;
     Screen screen = null;
 
+    GameCharacter mario = new GameCharacter("src/main/resources/mario.txt");
+
     public static void main(String[] args) {
         new app().init();
     }
@@ -60,7 +62,7 @@ public class app {
     }
 
     private void loop() throws IOException {
-        int currentPose = 0;
+        Pose currentPose = Pose.STAND;
         long poseTime = System.currentTimeMillis();
 
         TerminalPosition CharacterPosition = new TerminalPosition(5, terminal.getTerminalSize().getRows()-5);
@@ -73,28 +75,28 @@ public class app {
 
             } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowRight)) {
                 CharacterPosition = CharacterPosition.withRelativeColumn(1);
-                placeCharacter(CharacterPosition, 3);
-                currentPose = 3;
+                placeCharacter(CharacterPosition, Pose.RIGHT);
+                currentPose = Pose.RIGHT;
                 poseTime = System.currentTimeMillis();
             } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowLeft)) {
                 CharacterPosition = CharacterPosition.withRelativeColumn(-1);
-                placeCharacter(CharacterPosition, 6);
-                currentPose = 6;
+                placeCharacter(CharacterPosition, Pose.LEFT);
+                currentPose = Pose.LEFT;
                 poseTime = System.currentTimeMillis();
             } else if(keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowDown)){
-                placeCharacter(CharacterPosition, 9);
-                currentPose = 9;
+                placeCharacter(CharacterPosition, Pose.DOWN);
+                currentPose = Pose.DOWN;
                 poseTime = System.currentTimeMillis();
-            } else if (System.currentTimeMillis() - poseTime >= 300 && (currentPose != 0)) {
-                placeCharacter(CharacterPosition, 0);
+            } else if (System.currentTimeMillis() - poseTime >= 300 && (currentPose != Pose.STAND)) {
+                placeCharacter(CharacterPosition, Pose.STAND);
             }
             screen.refresh();
         }
     }
 
-    private void placeCharacter(TerminalPosition characterPosition, int characterPose) {
+    private void placeCharacter(TerminalPosition characterPosition, Pose pose_enum) {
         TextGraphics textGraphics = screen.newTextGraphics();
-        String[] pose = Poses.getPoseI().getPose(characterPose);
+        String[] pose = mario.move(pose_enum);
         for (int i = 0;i<3;i++) {
             textGraphics.putString(characterPosition.withRelativeRow(i), pose[i]);
         }
